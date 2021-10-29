@@ -12,11 +12,11 @@ namespace SQLBulk.UnitTests.SqlServer
 {
     public class TestDatabase
     {
-        private const string LocalDbMaster =
-            @"Data Source=(LocalDB)\sqllocaldefaultinstance;Initial Catalog=master;Integrated Security=True";
-        private const string TestConnectionStringTemplate =
-            @"Data Source=(LocalDB)\sqllocaldefaultinstance;Initial Catalog={0};Integrated Security=True;
-              MultipleActiveResultSets=True;AttachDBFilename={1}.mdf";
+        private const string DefaultConnectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog={0};Integrated Security=True;";
+        private const string LocalDbEnvironmentVariableKey = "LocalDbConnectionString";
+        private static readonly string LocalDbMaster = (Environment.GetEnvironmentVariable(LocalDbEnvironmentVariableKey) ?? DefaultConnectionString).Replace("{0}", "master");
+        private static readonly string TestConnectionStringTemplate = (Environment.GetEnvironmentVariable(LocalDbEnvironmentVariableKey) ?? DefaultConnectionString) + @"MultipleActiveResultSets=True;AttachDBFilename={1}.mdf";
+
         private readonly string TestConnectionString;
 
         private readonly string _databaseName;
