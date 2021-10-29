@@ -13,7 +13,8 @@ namespace SQLBulk.UnitTests.Entities
         [PrimaryKey(false)]
         public string FirstName { get; set; }
         [PrimaryKey(false)]
-        public string LastName { get; set; }
+        [Column("LastName")]
+        public string SecondName { get; set; }
         [PrimaryKey(false)]
         public DateTime BirthDate { get; set; }
         public int NumberOfComplaints { get; set; }
@@ -31,7 +32,7 @@ namespace SQLBulk.UnitTests.Entities
                     BirthDate = DateTime.Now.AddYears(-10),
                     FirstName = string.Join(' ', "Henk", IntToString(i)),
                     Gender = 'M',
-                    LastName = "World",
+                    SecondName = "World",
                     MoneySpent = 12M,
                     NumberOfComplaints = 10,
                     Type = 'F',

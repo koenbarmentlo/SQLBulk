@@ -141,7 +141,7 @@ namespace SQLBulk.QueryBuilders
                     }
                 }
 
-                string query = $"MERGE {DestinationTableName} AS t USING {SourceTableName} AS s ON (";
+                string query = $"MERGE {DestinationTableName} AS d USING {SourceTableName} AS s ON (";
                 if (MatchIsAlwaysFalse)
                 {
                     query += "1 = 2";
@@ -154,13 +154,13 @@ namespace SQLBulk.QueryBuilders
                 {
                     query += string.Join(" AND ", MatchColumns.Select(m =>
                     {
-                        return $"s.{m} = t.{m}";
+                        return $"s.{m} = d.{m}";
                     }));
                 }
                 query += ") WHEN MATCHED THEN UPDATE SET ";
                 query += string.Join(",", ColumnNames.Where(p => !MatchColumns.Contains(p)).Select(name =>
                 {
-                    return $"t.{name} = s.{name}";
+                    return $"d.{name} = s.{name}";
                 }));
                 if (UseInsert)
                 {

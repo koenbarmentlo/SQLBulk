@@ -16,7 +16,7 @@ namespace SQLBulk.Extensions
 {
     public static class IDbConnectionBulkExtensions
     {
-        public static void BulkInsert<T>(this IDbConnection connection, T[] items, BulkOptions bulkOptions = null)
+        public static void BulkInsert<T>(this IDbConnection connection, ICollection<T> items, BulkOptions bulkOptions = null)
         {
             if(connection is SqlConnection sqlConnection)
             {
@@ -26,7 +26,7 @@ namespace SQLBulk.Extensions
             throw new NotImplementedException($"Only SqlConnection is currently supported.");
         }
 
-        public static Task BulkInsertAsync<T>(this IDbConnection connection, T[] items, BulkOptions bulkOptions = null)
+        public static Task BulkInsertAsync<T>(this IDbConnection connection, ICollection<T> items, BulkOptions bulkOptions = null)
         {
             if (connection is SqlConnection sqlConnection)
             {
@@ -35,7 +35,7 @@ namespace SQLBulk.Extensions
             throw new NotImplementedException($"Only SqlConnection is currently supported.");
         }
 
-        public static void BulkUpdate<T>(this IDbConnection connection, T[] items, UpdateBulkOptions bulkOptions)
+        public static void BulkUpdate<T>(this IDbConnection connection, ICollection<T> items, UpdateBulkOptions bulkOptions)
         {
             if (connection is SqlConnection sqlConnection)
             {
@@ -45,7 +45,7 @@ namespace SQLBulk.Extensions
             throw new NotImplementedException($"Only SqlConnection is currently supported.");
         }
 
-        public static Task BulkUpdateAsync<T>(this IDbConnection connection, T[] items, UpdateBulkOptions bulkOptions)
+        public static Task BulkUpdateAsync<T>(this IDbConnection connection, ICollection<T> items, UpdateBulkOptions bulkOptions)
         {
             if (connection is SqlConnection sqlConnection)
             {
@@ -54,7 +54,7 @@ namespace SQLBulk.Extensions
             throw new NotImplementedException($"Only SqlConnection is currently supported.");
         }
 
-        public static void BulkInsertOrUpdate<T>(this IDbConnection connection, T[] items, UpdateBulkOptions bulkOptions)
+        public static void BulkInsertOrUpdate<T>(this IDbConnection connection, ICollection<T> items, UpdateBulkOptions bulkOptions)
         {
             if (connection is SqlConnection sqlConnection)
             {
@@ -64,7 +64,7 @@ namespace SQLBulk.Extensions
             throw new NotImplementedException($"Only SqlConnection is currently supported.");
         }
 
-        public static Task BulkInsertOrUpdateAsync<T>(this IDbConnection connection, T[] items, UpdateBulkOptions bulkOptions)
+        public static Task BulkInsertOrUpdateAsync<T>(this IDbConnection connection, ICollection<T> items, UpdateBulkOptions bulkOptions)
         {
             if (connection is SqlConnection sqlConnection)
             {
@@ -73,7 +73,7 @@ namespace SQLBulk.Extensions
             throw new NotImplementedException($"Only SqlConnection is currently supported.");
         }
 
-        public static void BulkInsertOrUpdateOrDelete<T>(this IDbConnection connection, T[] items, UpdateBulkOptions bulkOptions)
+        public static void BulkInsertOrUpdateOrDelete<T>(this IDbConnection connection, ICollection<T> items, UpdateBulkOptions bulkOptions)
         {
             if (connection is SqlConnection sqlConnection)
             {
@@ -83,7 +83,7 @@ namespace SQLBulk.Extensions
             throw new NotImplementedException($"Only SqlConnection is currently supported.");
         }
 
-        public static Task BulkInsertOrUpdateOrDeleteAsync<T>(this IDbConnection connection, T[] items, UpdateBulkOptions bulkOptions)
+        public static Task BulkInsertOrUpdateOrDeleteAsync<T>(this IDbConnection connection, ICollection<T> items, UpdateBulkOptions bulkOptions)
         {
             if (connection is SqlConnection sqlConnection)
             {

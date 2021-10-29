@@ -4,7 +4,10 @@ using System.Text;
 
 namespace SQLBulk.Attributes
 {
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+    /// <summary>
+    /// Maps property to column. If omitted, property name is used.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
     public class ColumnAttribute : Attribute
     {
         public string Name { get; set; }
