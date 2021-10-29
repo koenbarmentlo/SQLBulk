@@ -33,7 +33,7 @@ namespace SQLBulk.UnitTests.SqlServer
         [TestCase(500_000)]
         [TestCase(1_000_000)]
         [TestCase(2_000_000)]
-        [TestCase(5_000_000)]
+        //[TestCase(5_000_000)]
         //[TestCase(10_000_000)]
         public void BulkInsertPerformanceMeasureTest(int numberOfRecords)
         {
