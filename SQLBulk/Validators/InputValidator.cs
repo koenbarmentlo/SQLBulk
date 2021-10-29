@@ -8,7 +8,7 @@ namespace SQLBulk.Validators
 {
     internal static class InputValidator
     {
-        internal static void ValidateItems<T>(T[] items)
+        internal static void ValidateItems<T>(IEnumerable<T> items)
         {
             if (items.Any(e => e == null))
             {

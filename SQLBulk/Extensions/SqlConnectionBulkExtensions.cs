@@ -17,7 +17,7 @@ namespace SQLBulk.Extensions
 {
     public static class SqlConnectionBulkExtensions
     {
-        internal static void BulkInsertSqlServer<T>(this SqlConnection connection, T[] items, BulkOptions bulkOptions = null)
+        internal static void BulkInsertSqlServer<T>(this SqlConnection connection, ICollection<T> items, BulkOptions bulkOptions = null)
         {
             if (!items.Any())
             {
@@ -30,7 +30,7 @@ namespace SQLBulk.Extensions
             }
         }
 
-        internal async static Task BulkInsertSqlServerAsync<T>(this SqlConnection connection, T[] items, BulkOptions bulkOptions = null)
+        internal async static Task BulkInsertSqlServerAsync<T>(this SqlConnection connection, ICollection<T> items, BulkOptions bulkOptions = null)
         {
             if (!items.Any())
             {
@@ -43,7 +43,7 @@ namespace SQLBulk.Extensions
             }
         }
 
-        private static SqlBulkCopy GetBulkCopy<T>(SqlConnection connection, T[] items, BulkOptions bulkOptions = null)
+        private static SqlBulkCopy GetBulkCopy<T>(SqlConnection connection, ICollection<T> items, BulkOptions bulkOptions = null)
         {
             InputValidator.ValidateItems(items);
             if (bulkOptions == null)
@@ -70,7 +70,8 @@ namespace SQLBulk.Extensions
             }
             foreach (var prop in properties)
             {
-                bulkCopy.ColumnMappings.Add(prop.Name, prop.Name);
+                var columnName = prop.GetColumnName();
+                bulkCopy.ColumnMappings.Add(columnName, columnName);
             }
             if (bulkOptions.BatchSize != 0)
             {
@@ -79,7 +80,7 @@ namespace SQLBulk.Extensions
             return bulkCopy;
         }
 
-        public static void BulkUpdateSqlServer<T>(this SqlConnection connection, T[] items, UpdateBulkOptions bulkOptions)
+        public static void BulkUpdateSqlServer<T>(this SqlConnection connection, ICollection<T> items, UpdateBulkOptions bulkOptions)
         {
             if (!items.Any())
             {
@@ -99,7 +100,7 @@ namespace SQLBulk.Extensions
             }
         }
 
-        public static async Task BulkUpdateSqlServerAsync<T>(this SqlConnection connection, T[] items, UpdateBulkOptions bulkOptions)
+        public static async Task BulkUpdateSqlServerAsync<T>(this SqlConnection connection, ICollection<T> items, UpdateBulkOptions bulkOptions)
         {
             if (!items.Any())
             {
@@ -127,10 +128,11 @@ namespace SQLBulk.Extensions
                 .SetDestinationTable(destinationTableName)
                 .SetSourceTable(tempTableName)
                 .SetMatchOn(bulkOptions.MatchOnColumnNames)
+                .SetCustomMatchExpression(bulkOptions.CustomMergeCondition)
                 .Build();
         }
 
-        public static void BulkInsertOrUpdateSqlServer<T>(this SqlConnection connection, T[] items, UpdateBulkOptions bulkOptions)
+        public static void BulkInsertOrUpdateSqlServer<T>(this SqlConnection connection, ICollection<T> items, UpdateBulkOptions bulkOptions)
         {
             if(!items.Any())
             {
@@ -150,7 +152,7 @@ namespace SQLBulk.Extensions
             }
         }
 
-        public static async Task BulkInsertOrUpdateSqlServerAsync<T>(this SqlConnection connection, T[] items, UpdateBulkOptions bulkOptions)
+        public static async Task BulkInsertOrUpdateSqlServerAsync<T>(this SqlConnection connection, ICollection<T> items, UpdateBulkOptions bulkOptions)
         {
             if (!items.Any())
             {
@@ -178,11 +180,12 @@ namespace SQLBulk.Extensions
                 .SetDestinationTable(destinationTableName)
                 .SetSourceTable(tempTableName)
                 .SetMatchOn(bulkOptions.MatchOnColumnNames)
+                .SetCustomMatchExpression(bulkOptions.CustomMergeCondition)
                 .UseInsert()
                 .Build();
         }
 
-        public static void BulkInsertOrUpdateOrDeleteSqlServer<T>(this SqlConnection connection, T[] items, UpdateBulkOptions bulkOptions)
+        public static void BulkInsertOrUpdateOrDeleteSqlServer<T>(this SqlConnection connection, ICollection<T> items, UpdateBulkOptions bulkOptions)
         {
             string destinationTableName = !string.IsNullOrWhiteSpace(bulkOptions.DestinationTableName) ? bulkOptions.DestinationTableName : typeof(T).GetTableName();
             string tempTableName = CreateTempTable(connection, destinationTableName);
@@ -198,7 +201,7 @@ namespace SQLBulk.Extensions
             }
         }
 
-        public static async Task BulkInsertOrUpdateOrDeleteSqlServerAsync<T>(this SqlConnection connection, T[] items, UpdateBulkOptions bulkOptions)
+        public static async Task BulkInsertOrUpdateOrDeleteSqlServerAsync<T>(this SqlConnection connection, ICollection<T> items, UpdateBulkOptions bulkOptions)
         {
             string destinationTableName = !string.IsNullOrWhiteSpace(bulkOptions.DestinationTableName) ? bulkOptions.DestinationTableName : typeof(T).GetTableName();
             string tempTableName = await CreateTempTableAsync(connection, destinationTableName);
@@ -222,12 +225,13 @@ namespace SQLBulk.Extensions
                     .SetDestinationTable(destinationTableName)
                     .SetSourceTable(tempTableName)
                     .SetMatchOn(bulkOptions.MatchOnColumnNames)
+                    .SetCustomMatchExpression(bulkOptions.CustomMergeCondition)
                     .UseInsert()
                     .UseDelete()
                     .Build();
         }
 
-        private static void ExecuteBulkCommand<T>(this SqlConnection connection, T[] items, string query, UpdateBulkOptions bulkOptions)
+        private static void ExecuteBulkCommand<T>(this SqlConnection connection, ICollection<T> items, string query, UpdateBulkOptions bulkOptions)
         {
             InputValidator.ValidateItems(items);
             if (bulkOptions == null)
@@ -238,7 +242,7 @@ namespace SQLBulk.Extensions
             connection.ExecuteNonQuery(query);
         }
 
-        private static async Task ExecuteBulkCommandAsync<T>(this SqlConnection connection, T[] items, string query, UpdateBulkOptions bulkOptions)
+        private static async Task ExecuteBulkCommandAsync<T>(this SqlConnection connection, ICollection<T> items, string query, UpdateBulkOptions bulkOptions)
         {
             InputValidator.ValidateItems(items);
             if (bulkOptions == null)

@@ -74,7 +74,7 @@ namespace SQLBulk.UnitTests.SqlServer
                         FirstName = "Japie",
                         BirthDate = DateTime.Now,
                         Gender = 'M',
-                        LastName = "Jansie",
+                        SecondName = "Jansie",
                         MoneySpent = 10M,
                         NumberOfComplaints = 1,
                         Type = 'A',
