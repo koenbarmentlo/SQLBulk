@@ -29,7 +29,8 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- task: VSTest@2
+- task: DotNetCoreCLI@2
   inputs:
-    platform: '$(buildPlatform)'
+    command: 'test'
+    projects: '**/*.UnitTests.csproj'
     configuration: '$(buildConfiguration)'
