@@ -30,12 +30,13 @@ steps:
     configuration: '$(buildConfiguration)'
 
 - task: PowerShell@2
-  displayName: 'start mssqllocaldb'
+  displayName: 'Start mssqllocaldb'
   inputs:
     targetType: 'inline'
     script: 'sqllocaldb start mssqllocaldb'
 
 - task: DotNetCoreCLI@2
+  displayName: 'dotnet test'
   inputs:
     command: 'test'
     projects: '**/*.UnitTests.csproj'
